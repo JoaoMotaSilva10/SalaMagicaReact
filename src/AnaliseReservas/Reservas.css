@@ -1,0 +1,132 @@
+body {
+  background-color: #181818;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  color: #e1e1e6;
+}
+
+.container-reservas {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.titulo-reservas {
+  font-size: 26px;
+  color: #ffffff;
+  margin-bottom: 32px;
+  text-align: left; /* Muda aqui se ainda estiver "center" */
+}
+
+
+.lista-reservas {
+  display: flex;
+  flex-direction: row; /* antes era column */
+  flex-wrap: wrap;      /* permite que quebrem linha se precisar */
+  gap: 20px;
+  justify-content: flex-start; /* alinha os cards à esquerda */
+}
+
+.card-reserva {
+  background: #252525;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  padding: 24px;
+  width: 300px;              /* largura fixa mais adequada para grid */
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+
+.card-reserva:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
+}
+
+.card-reserva p {
+  margin: 0;
+  font-size: 15px;
+  color: #dcdde1;
+  background: none; /* remove fundo preto */
+  padding: 0;        /* remove padding extra */
+  border: none;
+}
+
+.card-reserva p strong {
+  color: #ffffff;         /* cor do texto */
+  font-weight: 600;
+  background: none;       /* REMOVE FUNDO PRETO */
+  padding: 0;
+}
+
+
+.botoes-reserva {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  background: none; /* remove fundo preto */
+  padding: 0;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.btn.aceitar {
+  background-color: #3ddc84;
+  color: #fff;
+}
+
+.btn.aceitar:hover {
+  background-color: #32c178;
+}
+
+.btn.recusar {
+  background-color: #f56565;
+  color: #ffffff;
+}
+
+.btn.recusar:hover {
+  background-color: #dd4c4c;
+}
+
+.btn.editar {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.btn.editar:hover {
+  background-color: #2563eb;
+}
+
+input[type="datetime-local"] {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #1f1f1f;
+  color: #e1e1e6;
+  border: 1px solid #444;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn.confirmar {
+  background-color: #38bdf8; /* azul claro */
+  color: #ffffff;
+}
+
+.btn.confirmar:hover {
+  background-color: #0ea5e9; /* azul mais escuro */
+}

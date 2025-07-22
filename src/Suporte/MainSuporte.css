@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.container {
+    width: 100%
+  }
+
+  .table-wrapper {
+    max-height: 70%; /* Defina a altura máxima conforme necessário */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
+  }
+  
+.hora{
+  font-size: 4rem;
+  margin-top: 7%;
+  font-weight: 600;
+  margin-left: 23%;
+  width: 100%;
+}
+.rec{
+  font-size: 4rem;
+  font-weight: 600;
+  margin-left: 33%;
+  width: 100%;
+  margin-bottom: 2%;
+}
+
+.support-table {
+  background-color: #1f1f1f;
+  color: #e1e1e6;
+}
+
+.support-table td,
+.support-table th {
+  border: 1px solid #333;
+  background-color: #2c2c2c;
+  color: #e1e1e6;
+}
+
+.reclamacao-details {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+.seta {
+  background-color: #3b3b3b;
+  color: white;
+  border: 1px solid #777;
+}
