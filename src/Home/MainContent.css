@@ -53,40 +53,57 @@
 .btn-sair:hover {
   background-color: #7e3ff2;
 }
-
 .estatisticas-grid {
   display: flex;
-  justify-content: flex-start;
-  gap: 30px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px; /* menor largura */
+  margin: 0 auto;
 }
 
 .estatistica-card {
   background-color: #1f1f1f;
-  border-radius: 30px;
-  padding: 30px;
-  flex: 1 1 300px;
-  max-width: 400px;
-  text-align: center;
+  border-radius: 20px;
+  padding: 25px 20px;
+  width: 100%;
   color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 140px; /* reduz altura */
 }
 
 .estatistica-card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-  background: none;
+  font-size: 1.6rem;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+  background: transparent !important; /* remove qualquer fundo herdado */
 }
 
 .estatistica-card p {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: bold;
   color: #a97fff;
-  background: none;
+  margin: 0 0 20px 0;
+  background: transparent !important; /* remove fundo preto do número */
 }
 
-.estatistica-card:hover {
-  transform: translateY(-10px);
-  cursor: default;
+.card-button {
+  background-color: #6200ea;
+  padding: 10px 25px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+  background-color: #7e3ff2;
 }

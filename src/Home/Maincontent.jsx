@@ -38,19 +38,28 @@ function MainContent() {
       </div>
 
       <div className="estatisticas-grid">
+        
+
         <div className="estatistica-card">
-          <h2>Total de Reservas</h2>
-          <p>{totalReservas}</p>
-        </div>
-        <div className="estatistica-card">
-          <h2>Reservas de Hoje</h2>
+          <h2>Reservas a Analisar</h2>
           <p>{reservasHoje}</p>
+          <Link to="/reservas" className="card-button">Ver Hoje</Link>
         </div>
+
         <div className="estatistica-card">
-          <h2>Reservas Pendentes</h2>
+          <h2>Reservas Realizadas</h2>
+          <p>{totalReservas}</p>
+          <Link to="/reservasrealizadas" className="card-button">Ver Reservas</Link>
+        </div>
+
+        <div className="estatistica-card">
+          <h2>Reservas Marcadas</h2>
           <p>{reservasPendentes}</p>
+          <Link to="/reservasMarcadas" className="card-button">Ver Pendentes</Link>
         </div>
       </div>
+
+
     </div>
   );
 }
