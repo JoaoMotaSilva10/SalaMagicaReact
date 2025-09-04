@@ -9,6 +9,7 @@ function MainContent() {
   const [totalReservas, setTotalReservas] = useState(0);
   const [reservasHoje, setReservasHoje] = useState(0);
   const [reservasPendentes, setReservasPendentes] = useState(0);
+  const [reservasMarcadas, setReservasMarcadas] = useState(0);
 
   useEffect(() => {
     fetchEstatisticas();
@@ -16,13 +17,15 @@ function MainContent() {
 
   const fetchEstatisticas = async () => {
     try {
-      const total = await axios.get('http://localhost:8080/reservas/count');
+      const total = await axios.get('http://localhost:8080/reservas/count/realizadas');
       const hoje = await axios.get('http://localhost:8080/reservas/count/today');
       const pendentes = await axios.get('http://localhost:8080/reservas/count/pendentes');
+      const marcadas = await axios.get('http://localhost:8080/reservas/count/marcadas');
 
       setTotalReservas(total.data);
       setReservasHoje(hoje.data);
       setReservasPendentes(pendentes.data);
+      setReservasMarcadas(marcadas.data);
     } catch (error) {
       console.error("Erro ao buscar estatísticas:", error);
     }
@@ -38,27 +41,29 @@ function MainContent() {
       </div>
 
       <div className="estatisticas-grid">
-        
+  <div className="estatistica-card">
+    <h2>Reservas Hoje</h2>
+    <p>{reservasHoje}</p>
+  </div>
 
-        <div className="estatistica-card">
-          <h2>Reservas a Analisar</h2>
-          <p>{reservasHoje}</p>
-          <Link to="/reservas" className="card-button">Ver Hoje</Link>
-        </div>
+  <div className="estatistica-card">
+    <h2>Reservas Pendentes</h2>
+    <p>{reservasHoje}</p> {/* Agora mostra o mesmo número do dia */}
+    <Link to="/Reservas" className="card-button">Ver Pendentes</Link>
+  </div>
 
-        <div className="estatistica-card">
-          <h2>Reservas Realizadas</h2>
-          <p>{totalReservas}</p>
-          <Link to="/reservasrealizadas" className="card-button">Ver Reservas</Link>
-        </div>
+  <div className="estatistica-card">
+    <h2>Reservas Marcadas</h2>
+    <p>{reservasMarcadas}</p>
+    <Link to="/reservasMarcadas" className="card-button">Ver Marcadas</Link>
+  </div>
 
-        <div className="estatistica-card">
-          <h2>Reservas Marcadas</h2>
-          <p>{reservasPendentes}</p>
-          <Link to="/reservasMarcadas" className="card-button">Ver Pendentes</Link>
-        </div>
-      </div>
-
+  <div className="estatistica-card">
+    <h2>Reservas Realizadas</h2>
+    <p>{totalReservas}</p>
+    <Link to="/reservasrealizadas" className="card-button">Ver Realizadas</Link>
+  </div>
+</div>
 
     </div>
   );

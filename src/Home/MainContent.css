@@ -54,13 +54,14 @@
   background-color: #7e3ff2;
 }
 .estatisticas-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   width: 100%;
-  max-width: 500px; /* menor largura */
+  max-width: 800px; 
   margin: 0 auto;
 }
+
 
 .estatistica-card {
   background-color: #1f1f1f;
