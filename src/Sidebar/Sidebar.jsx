@@ -36,6 +36,9 @@ function Sidebar() {
         <Link to={'/Gerenciador'} className="custom-button"><li>
         <img src={analysisIcon}></img>  <i className="icon-suporte"></i> Gerenciadores
         </li></Link>
+        <Link to={'/Alunos'} className="custom-button"><li>
+        <img src={supportIcon}></img>  <i className="icon-suporte"></i> Alunos
+        </li></Link>
       </ul>
     </div>
   );

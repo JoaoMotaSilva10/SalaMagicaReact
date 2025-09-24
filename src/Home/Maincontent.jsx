@@ -21,10 +21,17 @@ function MainContent() {
       const hoje = await axios.get('http://localhost:8080/reservas/count/today');
       const pendentes = await axios.get('http://localhost:8080/reservas/count/pendentes');
       const marcadas = await axios.get('http://localhost:8080/reservas/count/marcadas');
+      
+      // Buscar todas as reservas para contar pendentes corretamente
+      const todasReservas = await axios.get('http://localhost:8080/reservas');
+      const reservasPendentesCorretas = todasReservas.data.filter(r => r.statusReserva === 'EM_ANALISE').length;
+
+      console.log('Pendentes da API:', pendentes.data);
+      console.log('Pendentes filtradas:', reservasPendentesCorretas);
 
       setTotalReservas(total.data);
       setReservasHoje(hoje.data);
-      setReservasPendentes(pendentes.data);
+      setReservasPendentes(reservasPendentesCorretas); // Usando a contagem filtrada
       setReservasMarcadas(marcadas.data);
     } catch (error) {
       console.error("Erro ao buscar estatísticas:", error);
@@ -48,7 +55,7 @@ function MainContent() {
 
   <div className="estatistica-card">
     <h2>Reservas Pendentes</h2>
-    <p>{reservasHoje}</p> {/* Agora mostra o mesmo número do dia */}
+    <p>{reservasPendentes}</p>
     <Link to="/Reservas" className="card-button">Ver Pendentes</Link>
   </div>
 

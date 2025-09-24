@@ -1,10 +1,12 @@
 import React from "react";
 import Home from "../Home/Home";
 import Login from "../Login/Login";
+import EsqueciSenha from "../EsqueciSenha/EsqueciSenha";
 import Reservas from "../AnaliseReservas/AnaliseReservas";
 import Suporte from "../Suporte/Suporte";
 import ReservasMarcadasPage from '../ReservasMarcadas/ReservasMarcadas';
 import Gerenciador from "../gerenciador/gerenciador";
+import Alunos from "../alunos/alunos";
 import ReservasRealizadasPage from "../ReservasRealizadas/ReservasRealizadas";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
@@ -22,8 +24,9 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {/* Login sempre acessível */}
+        {/* Login e recuperação de senha sempre acessíveis */}
         <Route path="/login" element={<Login />} />
+        <Route path="/esqueci-senha" element={<EsqueciSenha />} />
 
         {/* Redirecionar root "/" para login se não estiver logado */}
         <Route path="/" element={<PrivateRoute element={<Home />} />} />
@@ -32,6 +35,7 @@ const AppRoutes = () => {
         <Route path="/ReservasRealizadas" element={<PrivateRoute element={<ReservasRealizadasPage />} />} />
         <Route path="/Suporte" element={<PrivateRoute element={<Suporte />} />} />
         <Route path="/Gerenciador" element={<PrivateRoute element={<Gerenciador />} />} />
+        <Route path="/Alunos" element={<PrivateRoute element={<Alunos />} />} />
       </Routes>
     </Router>
   );

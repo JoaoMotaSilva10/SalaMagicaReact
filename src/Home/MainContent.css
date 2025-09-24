@@ -1,13 +1,28 @@
 .main-content {
   flex: 1;
   padding: 40px;
-  background-color: black;
+  background: transparent;
   min-height: 100vh;
   color: white;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(98, 0, 234, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(126, 63, 242, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .top-bar {
@@ -21,37 +36,39 @@
 .titulo {
   font-size: 3.6rem;
   font-weight: 700;
-  color: white;
+  background: linear-gradient(135deg, #ffffff 0%, #a97fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   white-space: normal;
   flex-shrink: 1;
   flex-grow: 1;
   margin-right: 20px;
+  text-shadow: 0 2px 10px rgba(169, 127, 255, 0.3);
 }
 
 .btn-sair {
-  background-color: #6200ea;
-  padding: 8px 20px; /* mais espaço interno para o texto */
-  border-radius: 10px;
-  font-weight: 500;
+  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
+  padding: 12px 24px;
+  border-radius: 15px;
+  font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
   color: white;
-  transition: background-color 0.3s ease;
-  width: auto; /* deixa a largura automática */
-  min-width: 130px; /* garante que não fique menor que o texto */
+  transition: all 0.3s ease;
+  width: auto;
+  min-width: 130px;
   text-align: center;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-sair:hover {
-  background-color: #7e3ff2;
-}
-
-
-
-.btn-sair:hover {
-  background-color: #7e3ff2;
+  background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
 }
 .estatisticas-grid {
   display: grid;
@@ -64,19 +81,42 @@
 
 
 .estatistica-card {
-  background-color: #1f1f1f;
+  background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
   border-radius: 20px;
-  padding: 25px 20px;
+  padding: 30px 25px;
   width: 100%;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 140px; /* reduz altura */
+  min-height: 160px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.estatistica-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.estatistica-card:hover::before {
+  left: 100%;
+}
+
+.estatistica-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
 .estatistica-card h2 {
@@ -95,16 +135,22 @@
 }
 
 .card-button {
-  background-color: #6200ea;
-  padding: 10px 25px;
-  border-radius: 10px;
-  font-weight: 500;
-  font-size: 1rem;
+  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
   text-decoration: none;
   color: white;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .card-button:hover {
-  background-color: #7e3ff2;
+  background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
 }

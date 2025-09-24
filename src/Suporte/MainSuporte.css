@@ -1,48 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* Removido - usando gradiente global */
 
-.container {
-    width: 100%
-  }
-
-  .table-wrapper {
-    max-height: 70%; /* Defina a altura máxima conforme necessário */
-    overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
-  }
-  
-.hora{
-  font-size: 4rem;
-  margin-top: 7%;
-  font-weight: 600;
-  margin-left: 23%;
-  width: 100%;
+h1 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 0.3em;
 }
-.rec{
+
+.cadastrareq {
   font-size: 4rem;
-  font-weight: 600;
-  margin-left: 33%;
+  margin-top: 5%;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff 0%, #a97fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(169, 127, 255, 0.3);
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background: transparent;
+  min-height: 100vh;
+  color: white;
+  box-sizing: border-box;
   width: 100%;
-  margin-bottom: 2%;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1rem;
 }
 
 .support-table {
-  background-color: #1f1f1f;
-  color: #e1e1e6;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid rgba(98, 0, 234, 0.3);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
 }
 
-.support-table td,
+.support-table th,
+.support-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  vertical-align: middle;
+}
+
 .support-table th {
-  border: 1px solid #333;
-  background-color: #2c2c2c;
-  color: #e1e1e6;
+  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.support-table tr:hover {
+  background: linear-gradient(135deg, #222 0%, #333 100%);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
 }
 
 .reclamacao-details {
-  background-color: #2a2a2a;
-  color: #ffffff;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 15px 0;
+  border: 1px solid rgba(98, 0, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .seta {
-  background-color: #3b3b3b;
-  color: white;
-  border: 1px solid #777;
+  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(98, 0, 234, 0.3);
+}
+
+.seta:hover {
+  background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(98, 0, 234, 0.4);
 }

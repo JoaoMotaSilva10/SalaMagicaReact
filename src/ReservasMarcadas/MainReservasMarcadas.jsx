@@ -33,7 +33,8 @@ export function MainReservasMarcadas() {
     <p>Carregando reservas marcadas...</p>
   ) : (
     <div className="container-reservas">
-      <h2 className="titulo-reservas">Reservas Marcadas</h2>
+      <h1 className="titulo-reservas">Hora de Visualizar</h1>
+      <h1 className="titulo-reservas2">as Reservas Marcadas!</h1>
       {reservas.length === 0 ? (
         <p className="sem-reservas">Nenhuma reserva marcada.</p>
       ) : (

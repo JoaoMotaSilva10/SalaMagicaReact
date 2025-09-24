@@ -6,20 +6,43 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+/* Remove fundos cinzas indesejados */
+p, span, div, strong, em {
+  background: transparent !important;
+}
+
+/* Garante que elementos não tenham fundos padrão do navegador */
+input, textarea, select, button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #000;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
 }
 
 body {
-  display: flex;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  background: transparent;
 }
 
 main {
   flex: 1;
   padding: 24px;
+  background: transparent;
 }

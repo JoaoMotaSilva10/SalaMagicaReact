@@ -30,13 +30,6 @@ body {
     overflow: hidden;
 }
 
-.login-bg-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
 .login-image::before {
     content: '';
     position: absolute;
@@ -45,6 +38,13 @@ body {
     right: 0;
     bottom: 0;
     background: linear-gradient(90deg, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
+}
+
+.login-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .login-form {
@@ -86,7 +86,7 @@ body {
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
 }
-  
+
 .input-group {
     margin-bottom: 24px;
 }
@@ -120,39 +120,6 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-  
-.options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-}
-  
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.lembrlog {
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-}
-  
-.forgot-password {
-    color: #7e3ff2;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: color 0.3s ease;
-}
-  
-.forgot-password:hover {
-    color: #9c5aff;
-    text-decoration: underline;
-}
-  
 .login-button {
     width: 100%;
     padding: 16px;
@@ -165,13 +132,31 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
   
 .login-button:hover {
     background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
+}
+
+.voltar-button {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    color: #7e3ff2;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid #7e3ff2;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voltar-button:hover {
+    background: rgba(126, 63, 242, 0.1);
+    transform: translateY(-2px);
 }
 
 .erro-login {
@@ -184,81 +169,83 @@ body {
     font-size: 14px;
     text-align: center;
 }
-  
-  .signup {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .signup a {
-    color: #1e90ff;
-    text-decoration: none;
-  }
-  
-  .signup a:hover {
-    text-decoration: underline;
-  }
 
-.switch {
-    --button-width: 3em;
-    --button-height: 1.5em;
-    --toggle-diameter: 1.3em;
-    --button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
-    --toggle-shadow-offset: 8px;
-    --toggle-wider: 3em;
-    --color-grey: rgba(255, 255, 255, 0.3);
-    --color-purple: #6200ea;
-    cursor: pointer;
+.sucesso-container {
+    text-align: center;
 }
-   
-.slider {
-    display: inline-block;
-    width: var(--button-width);
-    height: var(--button-height);
-    background-color: var(--color-grey);
-    border-radius: calc(var(--button-height) / 2);
-    position: relative;
-    transition: 0.3s all ease-in-out;
+
+.sucesso-message {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
     border: 1px solid rgba(98, 0, 234, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
 }
-   
-.slider::after {
-    content: "";
-    display: inline-block;
-    width: var(--toggle-diameter);
-    height: var(--toggle-diameter);
-    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-    border-radius: calc(var(--toggle-diameter) / 2);
-    position: absolute;
-    top: var(--button-toggle-offset);
-    transform: translateX(var(--button-toggle-offset));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: 0.3s all ease-in-out;
+
+.sucesso-message h3 {
+    color: #7e3ff2;
+    font-size: 24px;
+    margin-bottom: 16px;
 }
-   
-.switch input[type="checkbox"]:checked + .slider {
-    background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
-    box-shadow: 0 0 10px rgba(98, 0, 234, 0.3);
+
+.sucesso-message p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    margin-bottom: 12px;
+    line-height: 1.5;
 }
-   
-.switch input[type="checkbox"]:checked + .slider::after {
-    transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+.sucesso-message strong {
+    color: #7e3ff2;
 }
-   
-.switch input[type="checkbox"] {
-    display: none;
+
+.info-message {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
+    border: 1px solid rgba(98, 0, 234, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
 }
-   
-.switch input[type="checkbox"]:active + .slider::after {
-    width: var(--toggle-wider);
+
+.info-message p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    margin-bottom: 8px;
 }
-   
-.switch input[type="checkbox"]:checked:active + .slider::after {
-    transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
+
+.info-message strong {
+    color: #7e3ff2;
 }
-  
-   
+
+.link-button {
+    background: none;
+    border: none;
+    color: #7e3ff2;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.link-button:hover {
+    color: #9c5aff;
+}
+
+.login-button:disabled,
+.voltar-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-button:disabled:hover,
+.voltar-button:disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
+}
+
 @media screen and (max-width: 768px) {
     .login-container {
         flex-direction: column;
@@ -286,4 +273,3 @@ body {
         font-size: 16px;
     }
 }
-  

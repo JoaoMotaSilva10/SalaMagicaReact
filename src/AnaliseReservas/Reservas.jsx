@@ -45,7 +45,8 @@ const Reservas = () => {
 
   return (
     <div className="container-reservas">
-      <h2 className="titulo-reservas">Reservas Pendentes</h2>
+      <h1 className="titulo-reservas">Hora de Analisar</h1>
+      <h1 className="titulo-reservas2">as Reservas!</h1>
 
       {reservas.length === 0 ? (
         <p className="sem-reservas">Nenhuma reserva pendente.</p>
