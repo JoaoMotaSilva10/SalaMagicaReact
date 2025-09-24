@@ -30,7 +30,8 @@ h1 {
 .main-content {
   flex: 1;
   padding: 40px;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
   min-height: 100vh;
   color: white;
   box-sizing: border-box;

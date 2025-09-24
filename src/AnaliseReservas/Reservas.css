@@ -62,6 +62,13 @@
   overflow: hidden;
 }
 
+.card-reserva.editando {
+  background: linear-gradient(135deg, #2a1f3d 0%, #3d2a5a 100%);
+  border: 2px solid rgba(169, 127, 255, 0.6);
+  box-shadow: 0 12px 35px rgba(169, 127, 255, 0.3);
+  transform: scale(1.02);
+}
+
 .card-reserva::before {
   content: '';
   position: absolute;
@@ -158,16 +165,53 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
-input[type="datetime-local"] {
-  margin-top: 10px;
-  padding: 10px;
+.edicao-horario {
+  background: rgba(169, 127, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  border: 1px solid rgba(169, 127, 255, 0.3);
+}
+
+.edicao-horario label {
+  display: block;
+  color: #a97fff;
+  font-weight: 600;
+  margin-bottom: 8px;
   font-size: 14px;
-  background-color: #1f1f1f;
-  color: #e1e1e6;
-  border: 1px solid #444;
+}
+
+input[type="datetime-local"] {
+  padding: 12px;
+  font-size: 14px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #ffffff;
+  border: 2px solid rgba(169, 127, 255, 0.4);
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: #a97fff;
+  box-shadow: 0 0 15px rgba(169, 127, 255, 0.3);
+  background: linear-gradient(135deg, #2a1f3d 0%, #3d2a5a 100%);
+}
+
+.btn.salvar {
+  background: linear-gradient(135deg, #a97fff 0%, #8b5cf6 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(169, 127, 255, 0.4);
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.btn.salvar:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(169, 127, 255, 0.5);
 }
 
 .btn.confirmar {

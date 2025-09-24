@@ -16,7 +16,7 @@ const MainContentAlunos = () => {
     try {
       const response = await axios.get("http://localhost:8080/usuarios"); 
       // Filtra só os alunos
-      const alunos = response.data.filter(user => user.nivelAcesso === "ALUNO");
+      const alunos = response.data.filter(user => user.nivelAcesso === "USER");
       setStudents(alunos);
     } catch (error) {
       console.error("Erro ao buscar alunos:", error);

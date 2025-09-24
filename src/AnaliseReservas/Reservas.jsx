@@ -53,12 +53,12 @@ const Reservas = () => {
       ) : (
         <div className="lista-reservas">
           {reservas.map(reserva => (
-            <div key={reserva.id} className="card-reserva">
+            <div key={reserva.id} className={`card-reserva ${editandoId === reserva.id ? 'editando' : ''}`}>
               <p><strong>Usuário:</strong> {reserva.usuario?.nome}</p>
               <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
 
               {editandoId === reserva.id ? (
-                <>
+                <div className="edicao-horario">
                   <label>Nova Data e Hora:</label>
                   <input
                     type="datetime-local"
@@ -66,7 +66,7 @@ const Reservas = () => {
                     onChange={(e) => setNovoHorario(e.target.value)}
                   />
                   <button className="btn salvar" onClick={() => handleSalvarHorario(reserva)}>Salvar</button>
-                </>
+                </div>
               ) : (
                 <p>
                   <strong>Data reservada:</strong>{' '}
