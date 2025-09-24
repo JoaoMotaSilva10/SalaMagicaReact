@@ -2,7 +2,7 @@
 
 > Interface web para sistema de reserva de salas e equipamentos escolares desenvolvida em React
 
-![Banner](screenshots/home.png)
+![Banner](screenshots/banner.png)
 
 ## 🚀 Sobre o Projeto
 
@@ -147,7 +147,7 @@ src/
 ## 📊 Funcionalidades Administrativas
 
 ### Dashboard
-[Dashboard] (screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard.png)
 - Total de usuários ativos
 - Reservas do dia/semana/mês
 - Recursos mais utilizados
