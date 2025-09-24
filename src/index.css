@@ -7,7 +7,7 @@
 }
 
 /* Remove fundos cinzas indesejados */
-p, span, div, strong, em {
+p, span, strong, em {
   background: transparent !important;
 }
 

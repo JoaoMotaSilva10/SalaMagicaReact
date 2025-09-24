@@ -22,6 +22,12 @@ const Login = () => {
 
       const usuario = response.data;
 
+      // Bloqueia acesso para usuários do tipo USER
+      if (usuario.nivelAcesso === 'USER') {
+        setErro('Acesso negado. Apenas administradores podem acessar o sistema.');
+        return;
+      }
+
       localStorage.setItem('usuario', JSON.stringify(usuario));
       navigate('/');
     } catch (error) {
