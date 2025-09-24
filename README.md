@@ -147,17 +147,11 @@ src/
 ## 📊 Funcionalidades Administrativas
 
 ### Dashboard
-(screenshots/login.png)
+[Dashboard] (screenshots/dashboard.png)
 - Total de usuários ativos
 - Reservas do dia/semana/mês
 - Recursos mais utilizados
 - Gráficos de tendências
-
-## 🔐 Controle de Acesso
-
-- **Admin** - Acesso total ao sistema
-- **Moderador** - Gerenciamento de reservas
-- **Visualizador** - Apenas leitura
 
 ## 📱 Responsividade
 
@@ -173,39 +167,6 @@ npm run build
 yarn build
 ```
 
-Os arquivos otimizados estarão na pasta `dist/`
-
-## 🌐 Deploy
-
-### Netlify
-```bash
-npm run build
-# Upload da pasta dist/
-```
-
-### Vercel
-```bash
-vercel --prod
-```
-
-### Apache/Nginx
-```bash
-npm run build
-# Copie o conteúdo de dist/ para o servidor
-```
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
 ## 👥 Equipe
 
 - **João Pedro Mota Silva** - Desenvolvedor Principal
@@ -213,8 +174,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 📞 Contato
 
-- Email: joaopedromotasilva200@gmail.com
-- GitHub: [@seu-usuario](https://github.com/seu-usuario)
+- Email: joaomotasilva10@outlook.com
+- GitHub: [JoaoMotaSilva10](https://github.com/JoaoMotaSilva10)
 
 ---
 
