@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api"; // importa o que você já configurou
 import "./MainContentAlunos.css";
 
 const MainContentAlunos = () => {
@@ -9,13 +9,16 @@ const MainContentAlunos = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    fetchStudents(); 
+    fetchStudents();
   }, []);
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("https://unarrested-unreverentially-valeria.ngrok-free.dev/usuarios"); 
-      // Filtra só os alunos
+      const response = await api.get("/usuarios", {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }); 
       const data = Array.isArray(response.data) ? response.data : [];
       const alunos = data.filter(user => user.nivelAcesso === "ALUNO");
       setStudents(alunos);
@@ -38,7 +41,7 @@ const MainContentAlunos = () => {
 
   const handleDeleteStudent = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/usuarios/${id}`);
+      await api.delete(`/usuarios/${id}`);
       setStudents(students.filter((student) => student.id !== id));
     } catch (error) {
       console.error("Erro ao excluir aluno:", error);
@@ -47,14 +50,13 @@ const MainContentAlunos = () => {
 
   const handleSaveStudent = async (student) => {
     try {
-      // Garante que nivelAcesso será sempre ALUNO
       const studentWithAluno = { ...student, nivelAcesso: "ALUNO" };
 
       if (isEdit) {
-        await axios.put(`http://localhost:8080/usuarios/${student.id}`, studentWithAluno); 
+        await api.put(`/usuarios/${student.id}`, studentWithAluno);
         setStudents(students.map((std) => (std.id === student.id ? studentWithAluno : std)));
       } else {
-        const response = await axios.post("http://localhost:8080/usuarios", studentWithAluno); 
+        const response = await api.post("/usuarios", studentWithAluno);
         setStudents([...students, response.data]);
       }
       setModalVisible(false);

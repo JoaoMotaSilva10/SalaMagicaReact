@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import "./MainContentGerenciador.css";
 
 const MainContentGerenciador = () => {
@@ -14,9 +14,10 @@ const MainContentGerenciador = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/usuarios"); 
+      const response = await api.get("/usuarios"); 
       // Filtra só os admins
-      const admins = response.data.filter(user => user.nivelAcesso === "ADMIN");
+      const data = Array.isArray(response.data) ? response.data : [];
+      const admins = data.filter(user => user.nivelAcesso === "ADMIN");
       setEmployees(admins);
     } catch (error) {
       console.error("Erro ao buscar funcionários:", error);
@@ -37,7 +38,7 @@ const MainContentGerenciador = () => {
 
   const handleDeleteEmployee = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/usuarios/${id}`);  // Corrigido para /usuarios
+      await api.delete(`/usuarios/${id}`);
       setEmployees(employees.filter((employee) => employee.id !== id));
     } catch (error) {
       console.error("Erro ao excluir funcionário:", error);
@@ -50,10 +51,10 @@ const MainContentGerenciador = () => {
       const employeeWithAdmin = { ...employee, nivelAcesso: "ADMIN" };
 
       if (isEdit) {
-        await axios.put(`http://localhost:8080/usuarios/${employee.id}`, employeeWithAdmin); 
+        await api.put(`/usuarios/${employee.id}`, employeeWithAdmin); 
         setEmployees(employees.map((emp) => (emp.id === employee.id ? employeeWithAdmin : emp)));
       } else {
-        const response = await axios.post("http://localhost:8080/usuarios", employeeWithAdmin); 
+        const response = await api.post("/usuarios", employeeWithAdmin); 
         setEmployees([...employees, response.data]);
       }
       setModalVisible(false);

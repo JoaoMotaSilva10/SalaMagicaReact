@@ -3,7 +3,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/Logobranca.svg';
 import LoginImage from '../assets/image.svg';
-import axios from 'axios';
+import api from '../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/usuarios/login', {
+      const response = await api.post('/usuarios/login', {
         email,
         senha
       });
@@ -23,7 +23,7 @@ const Login = () => {
       const usuario = response.data;
 
       // Bloqueia acesso para usuários do tipo USER
-      if (usuario.nivelAcesso === 'USER') {
+      if (usuario.nivelAcesso === 'ALUNO') {
         setErro('Acesso negado. Apenas administradores podem acessar o sistema.');
         return;
       }
