@@ -14,9 +14,10 @@ const MainContentAlunos = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/usuarios"); 
+      const response = await axios.get("https://unarrested-unreverentially-valeria.ngrok-free.dev/usuarios"); 
       // Filtra só os alunos
-      const alunos = response.data.filter(user => user.nivelAcesso === "USER");
+      const data = Array.isArray(response.data) ? response.data : [];
+      const alunos = data.filter(user => user.nivelAcesso === "ALUNO");
       setStudents(alunos);
     } catch (error) {
       console.error("Erro ao buscar alunos:", error);
