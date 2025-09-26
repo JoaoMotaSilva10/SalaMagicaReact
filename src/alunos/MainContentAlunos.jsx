@@ -14,14 +14,9 @@ const MainContentAlunos = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await api.get("/usuarios", {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      }); 
+      const response = await api.get("/alunos"); 
       const data = Array.isArray(response.data) ? response.data : [];
-      const alunos = data.filter(user => user.nivelAcesso === "ALUNO");
-      setStudents(alunos);
+      setStudents(data);
     } catch (error) {
       console.error("Erro ao buscar alunos:", error);
     }
@@ -40,23 +35,26 @@ const MainContentAlunos = () => {
   };
 
   const handleDeleteStudent = async (id) => {
-    try {
-      await api.delete(`/usuarios/${id}`);
-      setStudents(students.filter((student) => student.id !== id));
-    } catch (error) {
-      console.error("Erro ao excluir aluno:", error);
+    if (window.confirm('Tem certeza que deseja excluir este aluno?')) {
+      try {
+        await api.delete(`/alunos/${id}`);
+        setStudents(students.filter(student => student.id !== id));
+      } catch (error) {
+        console.error('Erro ao excluir aluno:', error);
+        alert('Erro ao excluir aluno');
+      }
     }
   };
 
   const handleSaveStudent = async (student) => {
     try {
-      const studentWithAluno = { ...student, nivelAcesso: "ALUNO" };
+      const studentWithAluno = { ...student, tipoUsuario: "ALUNO" };
 
       if (isEdit) {
-        await api.put(`/usuarios/${student.id}`, studentWithAluno);
-        setStudents(students.map((std) => (std.id === student.id ? studentWithAluno : std)));
+        const response = await api.put(`/alunos/${student.id}`, studentWithAluno);
+        setStudents(students.map(s => s.id === student.id ? response.data : s));
       } else {
-        const response = await api.post("/usuarios", studentWithAluno);
+        const response = await api.post("/alunos", studentWithAluno);
         setStudents([...students, response.data]);
       }
       setModalVisible(false);

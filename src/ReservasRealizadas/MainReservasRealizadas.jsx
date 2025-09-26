@@ -29,8 +29,8 @@ export function MainReservasRealizadas() {
           {reservas.map(r => (
             <div key={r.id} className="card-reserva">
               <p><strong>ID:</strong> {r.id}</p>
-              <p><strong>Usuário:</strong> {r.usuario.nome}</p>
-              <p><strong>Recurso:</strong> {r.recurso.nome}</p>
+              <p><strong>Usuário:</strong> {r.usuario?.nome || 'N/A'}</p>
+              <p><strong>Recurso:</strong> {r.recurso?.nome || 'N/A'}</p>
               <p><strong>Data:</strong> {new Date(r.dataReservada).toLocaleDateString()}</p>
               <p><strong>Status:</strong> {r.statusReserva}</p>
             </div>

@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/Logobranca.svg';
 import LoginImage from '../assets/image.svg';
 import api from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
@@ -15,20 +17,20 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/usuarios/login', {
+      const response = await api.post('/auth/login', {
         email,
         senha
       });
 
-      const usuario = response.data;
+      const { usuario, token } = response.data;
 
-      // Bloqueia acesso para usuários do tipo USER
-      if (usuario.nivelAcesso === 'ALUNO') {
-        setErro('Acesso negado. Apenas administradores podem acessar o sistema.');
+      // Bloqueia acesso para usuários do tipo ALUNO
+      if (usuario.tipoUsuario === 'ALUNO') {
+        setErro('Acesso negado. Apenas gerenciadores e administradores podem acessar o sistema.');
         return;
       }
 
-      localStorage.setItem('usuario', JSON.stringify(usuario));
+      login(usuario, token);
       navigate('/');
     } catch (error) {
       console.error('Erro no login:', error);

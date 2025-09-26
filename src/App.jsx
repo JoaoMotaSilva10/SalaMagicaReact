@@ -1,9 +1,12 @@
 import AppRoutes from "./Sidebar/AppRoutes";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export default function App() {
   return (
-    <div>
-      <AppRoutes />
-    </div>
+    <AuthProvider>
+      <div>
+        <AppRoutes />
+      </div>
+    </AuthProvider>
   );
 }

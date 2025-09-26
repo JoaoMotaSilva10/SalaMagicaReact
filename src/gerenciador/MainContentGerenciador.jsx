@@ -14,11 +14,9 @@ const MainContentGerenciador = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await api.get("/usuarios"); 
-      // Filtra só os admins
+      const response = await api.get("/gerenciadores"); 
       const data = Array.isArray(response.data) ? response.data : [];
-      const admins = data.filter(user => user.nivelAcesso === "ADMIN");
-      setEmployees(admins);
+      setEmployees(data);
     } catch (error) {
       console.error("Erro ao buscar funcionários:", error);
     }
@@ -37,24 +35,27 @@ const MainContentGerenciador = () => {
   };
 
   const handleDeleteEmployee = async (id) => {
-    try {
-      await api.delete(`/usuarios/${id}`);
-      setEmployees(employees.filter((employee) => employee.id !== id));
-    } catch (error) {
-      console.error("Erro ao excluir funcionário:", error);
+    if (window.confirm('Tem certeza que deseja excluir este gerenciador?')) {
+      try {
+        await api.delete(`/gerenciadores/${id}`);
+        setEmployees(employees.filter(employee => employee.id !== id));
+      } catch (error) {
+        console.error('Erro ao excluir gerenciador:', error);
+        alert('Erro ao excluir gerenciador');
+      }
     }
   };
 
   const handleSaveEmployee = async (employee) => {
     try {
-      // Garante que nivelAcesso será sempre ADMIN
-      const employeeWithAdmin = { ...employee, nivelAcesso: "ADMIN" };
+      // Garante que tipoUsuario será sempre GERENCIADOR
+      const employeeWithAdmin = { ...employee, tipoUsuario: "GERENCIADOR" };
 
       if (isEdit) {
-        await api.put(`/usuarios/${employee.id}`, employeeWithAdmin); 
-        setEmployees(employees.map((emp) => (emp.id === employee.id ? employeeWithAdmin : emp)));
+        const response = await api.put(`/gerenciadores/${employee.id}`, employeeWithAdmin);
+        setEmployees(employees.map(e => e.id === employee.id ? response.data : e));
       } else {
-        const response = await api.post("/usuarios", employeeWithAdmin); 
+        const response = await api.post("/gerenciadores", employeeWithAdmin); 
         setEmployees([...employees, response.data]);
       }
       setModalVisible(false);
