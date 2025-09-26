@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import "./MainContentGerenciador.css";
 
 const MainContentGerenciador = () => {
@@ -14,10 +14,9 @@ const MainContentGerenciador = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/usuarios"); 
-      // Filtra só os admins
-      const admins = response.data.filter(user => user.nivelAcesso === "ADMIN");
-      setEmployees(admins);
+      const response = await api.get("/gerenciadores"); 
+      const data = Array.isArray(response.data) ? response.data : [];
+      setEmployees(data);
     } catch (error) {
       console.error("Erro ao buscar funcionários:", error);
     }
@@ -36,24 +35,27 @@ const MainContentGerenciador = () => {
   };
 
   const handleDeleteEmployee = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/usuarios/${id}`);  // Corrigido para /usuarios
-      setEmployees(employees.filter((employee) => employee.id !== id));
-    } catch (error) {
-      console.error("Erro ao excluir funcionário:", error);
+    if (window.confirm('Tem certeza que deseja excluir este gerenciador?')) {
+      try {
+        await api.delete(`/gerenciadores/${id}`);
+        setEmployees(employees.filter(employee => employee.id !== id));
+      } catch (error) {
+        console.error('Erro ao excluir gerenciador:', error);
+        alert('Erro ao excluir gerenciador');
+      }
     }
   };
 
   const handleSaveEmployee = async (employee) => {
     try {
-      // Garante que nivelAcesso será sempre ADMIN
-      const employeeWithAdmin = { ...employee, nivelAcesso: "ADMIN" };
+      // Garante que tipoUsuario será sempre GERENCIADOR
+      const employeeWithAdmin = { ...employee, tipoUsuario: "GERENCIADOR" };
 
       if (isEdit) {
-        await axios.put(`http://localhost:8080/usuarios/${employee.id}`, employeeWithAdmin); 
-        setEmployees(employees.map((emp) => (emp.id === employee.id ? employeeWithAdmin : emp)));
+        const response = await api.put(`/gerenciadores/${employee.id}`, employeeWithAdmin);
+        setEmployees(employees.map(e => e.id === employee.id ? response.data : e));
       } else {
-        const response = await axios.post("http://localhost:8080/usuarios", employeeWithAdmin); 
+        const response = await api.post("/gerenciadores", employeeWithAdmin); 
         setEmployees([...employees, response.data]);
       }
       setModalVisible(false);

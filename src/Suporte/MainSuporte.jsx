@@ -13,9 +13,10 @@ const MainSuporte = () => {
   const fetchMensagens = async () => {
     try {
       const data = await getMensagens();
-      setMensagens(data);
+      setMensagens(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Erro ao carregar mensagens:', err);
+      setMensagens([]); // Garante array mesmo em erro
     }
   };
 

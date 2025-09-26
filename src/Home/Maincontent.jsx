@@ -44,7 +44,6 @@ function MainContent() {
         <h1 className="titulo">
           Bem-vindo(a), {usuario?.nome || "Gerente"}!
         </h1>
-        <Link to="/Login" className="btn-sair">Sair da conta</Link>
       </div>
 
       <div className="estatisticas-grid">

@@ -9,33 +9,28 @@ import Gerenciador from "../gerenciador/gerenciador";
 import Alunos from "../alunos/alunos";
 import ReservasRealizadasPage from "../ReservasRealizadas/ReservasRealizadas";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-
-// Verifica se há um usuário logado
-const isAuthenticated = () => {
-  return localStorage.getItem("usuario") !== null;
-};
-
-// Rota protegida: se estiver logado, renderiza o componente; senão, redireciona para login
-const PrivateRoute = ({ element }) => {
-  return isAuthenticated() ? element : <Navigate to="/login" />;
-};
+import ProtectedRoute from "../components/ProtectedRoute";
+import AdminRoute from "../components/AdminRoute";
+import { useAuth } from "../contexts/AuthContext";
 
 const AppRoutes = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Router>
       <Routes>
-        {/* Login e recuperação de senha sempre acessíveis */}
-        <Route path="/login" element={<Login />} />
+        {/* Redireciona para home se já estiver logado */}
+        <Route path="/login" element={isAuthenticated() ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/esqueci-senha" element={<EsqueciSenha />} />
 
-        {/* Redirecionar root "/" para login se não estiver logado */}
-        <Route path="/" element={<PrivateRoute element={<Home />} />} />
-        <Route path="/Reservas" element={<PrivateRoute element={<Reservas />} />} />
-        <Route path="/ReservasMarcadas" element={<PrivateRoute element={<ReservasMarcadasPage />} />} />
-        <Route path="/ReservasRealizadas" element={<PrivateRoute element={<ReservasRealizadasPage />} />} />
-        <Route path="/Suporte" element={<PrivateRoute element={<Suporte />} />} />
-        <Route path="/Gerenciador" element={<PrivateRoute element={<Gerenciador />} />} />
-        <Route path="/Alunos" element={<PrivateRoute element={<Alunos />} />} />
+        {/* Todas as rotas protegidas */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/Reservas" element={<ProtectedRoute><Reservas /></ProtectedRoute>} />
+        <Route path="/ReservasMarcadas" element={<ProtectedRoute><ReservasMarcadasPage /></ProtectedRoute>} />
+        <Route path="/ReservasRealizadas" element={<ProtectedRoute><ReservasRealizadasPage /></ProtectedRoute>} />
+        <Route path="/Suporte" element={<ProtectedRoute><Suporte /></ProtectedRoute>} />
+        <Route path="/Gerenciador" element={<AdminRoute><Gerenciador /></AdminRoute>} />
+        <Route path="/Alunos" element={<AdminRoute><Alunos /></AdminRoute>} />
       </Routes>
     </Router>
   );

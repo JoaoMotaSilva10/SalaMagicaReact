@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api"; // importa o que você já configurou
 import "./MainContentAlunos.css";
 
 const MainContentAlunos = () => {
@@ -9,15 +9,14 @@ const MainContentAlunos = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    fetchStudents(); 
+    fetchStudents();
   }, []);
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/usuarios"); 
-      // Filtra só os alunos
-      const alunos = response.data.filter(user => user.nivelAcesso === "USER");
-      setStudents(alunos);
+      const response = await api.get("/alunos"); 
+      const data = Array.isArray(response.data) ? response.data : [];
+      setStudents(data);
     } catch (error) {
       console.error("Erro ao buscar alunos:", error);
     }
@@ -36,24 +35,26 @@ const MainContentAlunos = () => {
   };
 
   const handleDeleteStudent = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/usuarios/${id}`);
-      setStudents(students.filter((student) => student.id !== id));
-    } catch (error) {
-      console.error("Erro ao excluir aluno:", error);
+    if (window.confirm('Tem certeza que deseja excluir este aluno?')) {
+      try {
+        await api.delete(`/alunos/${id}`);
+        setStudents(students.filter(student => student.id !== id));
+      } catch (error) {
+        console.error('Erro ao excluir aluno:', error);
+        alert('Erro ao excluir aluno');
+      }
     }
   };
 
   const handleSaveStudent = async (student) => {
     try {
-      // Garante que nivelAcesso será sempre ALUNO
-      const studentWithAluno = { ...student, nivelAcesso: "ALUNO" };
+      const studentWithAluno = { ...student, tipoUsuario: "ALUNO" };
 
       if (isEdit) {
-        await axios.put(`http://localhost:8080/usuarios/${student.id}`, studentWithAluno); 
-        setStudents(students.map((std) => (std.id === student.id ? studentWithAluno : std)));
+        const response = await api.put(`/alunos/${student.id}`, studentWithAluno);
+        setStudents(students.map(s => s.id === student.id ? response.data : s));
       } else {
-        const response = await axios.post("http://localhost:8080/usuarios", studentWithAluno); 
+        const response = await api.post("/alunos", studentWithAluno);
         setStudents([...students, response.data]);
       }
       setModalVisible(false);
