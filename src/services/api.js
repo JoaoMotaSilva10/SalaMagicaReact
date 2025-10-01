@@ -46,6 +46,11 @@
     return response.data;
   };
 
+  export const getAlunos = async () => {
+    const response = await api.get('/alunos');
+    return response.data;
+  };
+
   // Interceptor para adicionar token nas requisições
   api.interceptors.request.use(
     (config) => {

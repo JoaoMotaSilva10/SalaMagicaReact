@@ -48,19 +48,19 @@ const MainContentGerenciador = () => {
 
   const handleSaveEmployee = async (employee) => {
     try {
-      // Garante que tipoUsuario será sempre GERENCIADOR
-      const employeeWithAdmin = { ...employee, tipoUsuario: "GERENCIADOR" };
+      const employeeWithType = { ...employee, tipoUsuario: "GERENCIADOR" };
 
       if (isEdit) {
-        const response = await api.put(`/gerenciadores/${employee.id}`, employeeWithAdmin);
+        const response = await api.put(`/gerenciadores/${employee.id}`, employeeWithType);
         setEmployees(employees.map(e => e.id === employee.id ? response.data : e));
       } else {
-        const response = await api.post("/gerenciadores", employeeWithAdmin); 
+        const response = await api.post("/gerenciadores", employeeWithType); 
         setEmployees([...employees, response.data]);
       }
       setModalVisible(false);
     } catch (error) {
-      console.error("Erro ao salvar funcionário:", error);
+      console.error("Erro ao salvar gerenciador:", error);
+      alert("Erro ao salvar gerenciador");
     }
   };
 
@@ -73,9 +73,12 @@ const MainContentGerenciador = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Email</th>
               <th>Nome</th>
-              <th>Senha</th>
+              <th>Email</th>
+              <th>Unidade</th>
+              <th>Departamento</th>
+              <th>Cargo</th>
+              <th>Status</th>
               <th>Editar</th>
               <th>Excluir</th>
             </tr>
@@ -84,9 +87,12 @@ const MainContentGerenciador = () => {
             {employees.map((employee) => (
               <tr key={employee.id}>
                 <td>{employee.id}</td>
-                <td>{employee.email}</td>
                 <td>{employee.nome}</td>
-                <td>{employee.senha}</td>
+                <td>{employee.email}</td>
+                <td>{employee.unidade || '-'}</td>
+                <td>{employee.departamento || '-'}</td>
+                <td>{employee.cargo || '-'}</td>
+                <td>{employee.statusUsuario}</td>
                 <td>
                   <button className="lapis" onClick={() => handleEditEmployee(employee)}>✏️</button>
                 </td>
@@ -116,34 +122,52 @@ const MainContentGerenciador = () => {
 };
 
 const Modal = ({ employee, onClose, onSave, isEdit }) => {
-  const [id, setId] = useState(employee?.id || "");
+  const [nome, setNome] = useState(employee?.nome || "");
   const [email, setEmail] = useState(employee?.email || "");
-  const [nome, setNome] = useState(employee?.nome || ""); 
-  const [senha, setSenha] = useState(employee?.senha || "");
+  const [senha, setSenha] = useState("");
+  const [unidade, setUnidade] = useState(employee?.unidade || "");
+  const [departamento, setDepartamento] = useState(employee?.departamento || "");
+  const [cargo, setCargo] = useState(employee?.cargo || "");
+  const [statusUsuario, setStatusUsuario] = useState(employee?.statusUsuario || "ATIVO");
 
   const handleSubmit = () => {
-    const updatedEmployee = { id, email, nome, senha }; 
+    const updatedEmployee = { 
+      ...(isEdit && { id: employee.id }),
+      nome, 
+      email, 
+      ...(senha && { senha }),
+      unidade,
+      departamento,
+      cargo,
+      statusUsuario
+    }; 
     onSave(updatedEmployee);
   };
 
   useEffect(() => {
     if (employee) {
-      setId(employee.id);
-      setEmail(employee.email);
       setNome(employee.nome);
-      setSenha(employee.senha);
-    } else {
-      setId("");
-      setEmail("");
-      setNome("");
+      setEmail(employee.email);
+      setUnidade(employee.unidade || "");
+      setDepartamento(employee.departamento || "");
+      setCargo(employee.cargo || "");
+      setStatusUsuario(employee.statusUsuario || "ATIVO");
       setSenha("");
+    } else {
+      setNome("");
+      setEmail("");
+      setSenha("");
+      setUnidade("");
+      setDepartamento("");
+      setCargo("");
+      setStatusUsuario("ATIVO");
     }
   }, [employee]);
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{isEdit ? "Editar Funcionário" : "Adicionar Funcionário"}</h2>
+        <h2>{isEdit ? "Editar Gerenciador" : "Adicionar Gerenciador"}</h2>
        
         <label>
           Nome:
@@ -151,6 +175,7 @@ const Modal = ({ employee, onClose, onSave, isEdit }) => {
             type="text"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            required
           />
         </label>
         <label>
@@ -159,17 +184,52 @@ const Modal = ({ employee, onClose, onSave, isEdit }) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </label>
         <label>
-          Senha:
+          {isEdit ? "Nova Senha (deixe vazio para manter):" : "Senha:"}
           <input
             type="password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
+            {...(!isEdit && { required: true })}
           />
         </label>
-        {/* NivelAcesso não aparece no formulário, é sempre ADMIN */}
+        <label>
+          Unidade:
+          <input
+            type="text"
+            value={unidade}
+            onChange={(e) => setUnidade(e.target.value)}
+          />
+        </label>
+        <label>
+          Departamento:
+          <input
+            type="text"
+            value={departamento}
+            onChange={(e) => setDepartamento(e.target.value)}
+          />
+        </label>
+        <label>
+          Cargo:
+          <input
+            type="text"
+            value={cargo}
+            onChange={(e) => setCargo(e.target.value)}
+          />
+        </label>
+        <label>
+          Status:
+          <select
+            value={statusUsuario}
+            onChange={(e) => setStatusUsuario(e.target.value)}
+          >
+            <option value="ATIVO">ATIVO</option>
+            <option value="INATIVO">INATIVO</option>
+          </select>
+        </label>
 
         <button onClick={handleSubmit}>Salvar</button>
         <button onClick={onClose}>Cancelar</button>

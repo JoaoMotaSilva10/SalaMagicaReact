@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MainContent.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -17,13 +17,13 @@ function MainContent() {
 
   const fetchEstatisticas = async () => {
     try {
-      const total = await axios.get('http://localhost:8080/reservas/count/realizadas');
-      const hoje = await axios.get('http://localhost:8080/reservas/count/today');
-      const pendentes = await axios.get('http://localhost:8080/reservas/count/pendentes');
-      const marcadas = await axios.get('http://localhost:8080/reservas/count/marcadas');
+      const total = await api.get('/reservas/count/realizadas');
+      const hoje = await api.get('/reservas/count/today');
+      const pendentes = await api.get('/reservas/count/pendentes');
+      const marcadas = await api.get('/reservas/count/marcadas');
       
       // Buscar todas as reservas para contar pendentes corretamente
-      const todasReservas = await axios.get('http://localhost:8080/reservas');
+      const todasReservas = await api.get('/reservas');
       const reservasPendentesCorretas = todasReservas.data.filter(r => r.statusReserva === 'EM_ANALISE').length;
 
       console.log('Pendentes da API:', pendentes.data);

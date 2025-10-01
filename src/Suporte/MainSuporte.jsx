@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { getMensagens } from '../services/api'; // ajuste o caminho conforme seu projeto
+import { getMensagens, getAlunos } from '../services/api';
 import './MainSuporte.css';
 
 const MainSuporte = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [mensagens, setMensagens] = useState([]);
+  const [alunos, setAlunos] = useState([]);
 
   useEffect(() => {
-    fetchMensagens();
+    fetchData();
   }, []);
 
-  const fetchMensagens = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getMensagens();
-      setMensagens(Array.isArray(data) ? data : []);
+      const [mensagensData, alunosData] = await Promise.all([
+        getMensagens(),
+        getAlunos()
+      ]);
+      setMensagens(Array.isArray(mensagensData) ? mensagensData : []);
+      setAlunos(Array.isArray(alunosData) ? alunosData : []);
     } catch (err) {
-      console.error('Erro ao carregar mensagens:', err);
-      setMensagens([]); // Garante array mesmo em erro
+      console.error('Erro ao carregar dados:', err);
+      setMensagens([]);
+      setAlunos([]);
     }
+  };
+
+  const getRMByEmail = (email) => {
+    const aluno = alunos.find(a => a.email === email);
+    return aluno?.rm || '—';
   };
 
   const handleToggle = (id) => {
@@ -36,7 +47,8 @@ const MainSuporte = () => {
               <th>Nome (Emissor)</th>
               <th>RM</th>
               <th>Email</th>
-              <th>Status da Mensagem</th>
+              <th>Assunto</th>
+              <th>Data</th>
               <th>Ver Reclamação</th>
             </tr>
           </thead>
@@ -45,9 +57,10 @@ const MainSuporte = () => {
               <React.Fragment key={item.id}>
                 <tr>
                   <td>{item.emissor}</td>
-                  <td>—</td> {/* Você pode adaptar se tiver RM */}
+                  <td>{item.rm || getRMByEmail(item.email)}</td>
                   <td>{item.email}</td>
-                  <td>{item.statusMensagem}</td>
+                  <td>{item.assunto}</td>
+                  <td>{new Date(item.dataMensagem).toLocaleDateString('pt-BR')}</td>
                   <td>
                     <button className="seta" onClick={() => handleToggle(item.id)}>
                       {expandedRow === item.id ? '▲' : '▼'}
@@ -56,7 +69,7 @@ const MainSuporte = () => {
                 </tr>
                 {expandedRow === item.id && (
                   <tr>
-                    <td colSpan="5">
+                    <td colSpan="6">
                       <div className="reclamacao-details">
                         {item.texto}
                       </div>
