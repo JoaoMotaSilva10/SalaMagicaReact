@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MainContent.css';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
+import { getEstatisticasReservas } from '../services/api';
 
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -17,22 +17,12 @@ function MainContent() {
 
   const fetchEstatisticas = async () => {
     try {
-      const total = await api.get('/reservas/count/realizadas');
-      const hoje = await api.get('/reservas/count/today');
-      const pendentes = await api.get('/reservas/count/pendentes');
-      const marcadas = await api.get('/reservas/count/marcadas');
+      const stats = await getEstatisticasReservas();
       
-      // Buscar todas as reservas para contar pendentes corretamente
-      const todasReservas = await api.get('/reservas');
-      const reservasPendentesCorretas = todasReservas.data.filter(r => r.statusReserva === 'EM_ANALISE').length;
-
-      console.log('Pendentes da API:', pendentes.data);
-      console.log('Pendentes filtradas:', reservasPendentesCorretas);
-
-      setTotalReservas(total.data);
-      setReservasHoje(hoje.data);
-      setReservasPendentes(reservasPendentesCorretas); // Usando a contagem filtrada
-      setReservasMarcadas(marcadas.data);
+      setTotalReservas(stats.realizadas);
+      setReservasHoje(stats.hoje);
+      setReservasPendentes(stats.pendentes);
+      setReservasMarcadas(stats.marcadas);
     } catch (error) {
       console.error("Erro ao buscar estatísticas:", error);
     }
@@ -61,13 +51,13 @@ function MainContent() {
   <div className="estatistica-card">
     <h2>Reservas Marcadas</h2>
     <p>{reservasMarcadas}</p>
-    <Link to="/reservasMarcadas" className="card-button">Ver Marcadas</Link>
+    <Link to="/ReservasMarcadas" className="card-button">Ver Marcadas</Link>
   </div>
 
   <div className="estatistica-card">
     <h2>Reservas Realizadas</h2>
     <p>{totalReservas}</p>
-    <Link to="/reservasrealizadas" className="card-button">Ver Realizadas</Link>
+    <Link to="/ReservasRealizadas" className="card-button">Ver Realizadas</Link>
   </div>
 </div>
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getTodasReservas, atualizarReserva, getTodosRecursos } from '../services/api';
-import '../AnaliseReservas/ReservasCards.css';
+import { getTodasReservas, atualizarReserva, deletarReserva, getTodosRecursos } from '../services/api';
+import './ReservasGerenciamento.css';
 
-export function MainReservasRealizadas() {
+const ReservasGerenciamento = () => {
   const [reservas, setReservas] = useState([]);
   const [recursos, setRecursos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ export function MainReservasRealizadas() {
   const [formData, setFormData] = useState({
     informacao: '',
     dataReservada: '',
-    statusReserva: 'REALIZADA',
+    statusReserva: 'EM_ANALISE',
     recurso: { id: '' }
   });
 
@@ -25,8 +25,7 @@ export function MainReservasRealizadas() {
         getTodasReservas(),
         getTodosRecursos()
       ]);
-      const realizadas = reservasData.filter(r => r.statusReserva === 'REALIZADA');
-      setReservas(realizadas);
+      setReservas(reservasData);
       setRecursos(recursosData);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
@@ -78,46 +77,76 @@ export function MainReservasRealizadas() {
     setShowModal(true);
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir esta reserva?')) {
+      try {
+        await deletarReserva(id);
+        await carregarDados();
+      } catch (error) {
+        console.error('Erro ao excluir reserva:', error);
+      }
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       informacao: '',
       dataReservada: '',
-      statusReserva: 'REALIZADA',
+      statusReserva: 'EM_ANALISE',
       recurso: { id: '' }
     });
     setEditingReserva(null);
     setShowModal(false);
   };
 
-  if (loading) return <div className="loading">Carregando reservas realizadas...</div>;
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'EM_ANALISE': return 'pendente';
+      case 'ACEITA': return 'aceita';
+      case 'RECUSADA': return 'recusada';
+      case 'REALIZADA': return 'realizada';
+      default: return 'pendente';
+    }
+  };
+
+  if (loading) return <div className="loading">Carregando reservas...</div>;
 
   return (
     <div className="reservas-container">
       <div className="reservas-header">
-        <h1>Reservas Realizadas</h1>
+        <h1>Gerenciamento de Reservas</h1>
       </div>
 
-      {reservas.length === 0 ? (
-        <p className="sem-reservas">Nenhuma reserva realizada.</p>
-      ) : (
-        <div className="reservas-grid">
-          {reservas.map(reserva => (
-            <div key={reserva.id} className="reserva-card">
-              <div className="reserva-header">
-                <h3>#{reserva.id}</h3>
-                <span className="status realizada">REALIZADA</span>
-              </div>
-              <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoa?.nome}</p>
-              <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
-              <p className="reserva-descricao"><strong>Data:</strong> {new Date(reserva.dataReservada).toLocaleString()}</p>
-              <p className="reserva-descricao">{reserva.informacao}</p>
-              <div className="reserva-actions">
-                <button className="btn-edit" onClick={() => handleEdit(reserva)}>Editar</button>
-              </div>
+      <div className="reservas-grid">
+        {reservas.map(reserva => (
+          <div key={reserva.id} className="reserva-card">
+            <div className="reserva-header">
+              <h3>#{reserva.id}</h3>
+              <span className={`status ${getStatusColor(reserva.statusReserva)}`}>
+                {reserva.statusReserva}
+              </span>
             </div>
-          ))}
-        </div>
-      )}
+            <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoa?.nome}</p>
+            <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
+            <p className="reserva-descricao"><strong>Data:</strong> {new Date(reserva.dataReservada).toLocaleString()}</p>
+            <p className="reserva-descricao">{reserva.informacao}</p>
+            <div className="reserva-actions">
+              <button 
+                className="btn-edit"
+                onClick={() => handleEdit(reserva)}
+              >
+                Editar
+              </button>
+              <button 
+                className="btn-delete"
+                onClick={() => handleDelete(reserva.id)}
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {showModal && (
         <div className="modal-overlay">
@@ -159,6 +188,18 @@ export function MainReservasRealizadas() {
                   rows="3"
                 />
               </div>
+              <div className="form-group">
+                <label>Status:</label>
+                <select
+                  value={formData.statusReserva}
+                  onChange={(e) => setFormData({...formData, statusReserva: e.target.value})}
+                >
+                  <option value="EM_ANALISE">Em Análise</option>
+                  <option value="ACEITA">Aceita</option>
+                  <option value="RECUSADA">Recusada</option>
+                  <option value="REALIZADA">Realizada</option>
+                </select>
+              </div>
               <div className="form-actions">
                 <button type="button" onClick={resetForm}>Cancelar</button>
                 <button type="submit">Atualizar</button>
@@ -169,4 +210,6 @@ export function MainReservasRealizadas() {
       )}
     </div>
   );
-}
+};
+
+export default ReservasGerenciamento;

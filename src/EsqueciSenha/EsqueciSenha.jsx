@@ -3,7 +3,7 @@ import './EsqueciSenha.css';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/Logobranca.svg';
 import LoginImage from '../assets/image.svg';
-import axios from 'axios';
+import { esqueciSenha, verificarCodigo, redefinirSenha } from '../services/api';
 
 const EsqueciSenha = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const EsqueciSenha = () => {
 
     setCarregando(true);
     try {
-      await axios.post('http://localhost:8080/usuarios/esqueci-senha', { email });
+      await esqueciSenha(email);
       setEtapa(2);
       setErro('');
     } catch (error) {
@@ -46,7 +46,7 @@ const EsqueciSenha = () => {
 
     setCarregando(true);
     try {
-      await axios.post('http://localhost:8080/usuarios/verificar-codigo', { email, codigo });
+      await verificarCodigo(email, codigo);
       setEtapa(3);
       setErro('');
     } catch (error) {
@@ -77,11 +77,7 @@ const EsqueciSenha = () => {
 
     setCarregando(true);
     try {
-      await axios.post('http://localhost:8080/usuarios/redefinir-senha', { 
-        email, 
-        codigo, 
-        novaSenha 
-      });
+      await redefinirSenha(email, codigo, novaSenha);
       
       alert('Senha redefinida com sucesso!');
       navigate('/login');

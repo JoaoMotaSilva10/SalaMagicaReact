@@ -3,7 +3,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/Logobranca.svg';
 import LoginImage from '../assets/image.svg';
-import api from '../services/api';
+import { login as loginAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
@@ -17,12 +17,8 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/auth/login', {
-        email,
-        senha
-      });
-
-      const { usuario, token } = response.data;
+      const response = await loginAPI(email, senha);
+      const { usuario, token } = response;
 
       // Bloqueia acesso para usuários do tipo ALUNO
       if (usuario.tipoUsuario === 'ALUNO') {

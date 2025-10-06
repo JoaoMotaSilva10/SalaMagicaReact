@@ -6,8 +6,10 @@
   flex-direction: column;
   background: transparent !important;
   border-right: 2px solid rgba(98, 0, 234, 0.3);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  z-index: 100;
   box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -27,17 +29,34 @@
 }
 
 .logo h2 {
-  background: linear-gradient(135deg, #ffffff 0%, #a97fff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(169, 127, 255, 0.3);
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
 }
 
 .sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background: transparent !important;
+  flex: 1;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.sidebar-footer ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -105,4 +124,50 @@ a {
   text-decoration: none;
   color: white;
   font-weight: 500;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  margin-left: 20px;
+  border-left: 2px solid rgba(98, 0, 234, 0.3);
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.submenu-item {
+  font-size: 16px !important;
+  padding: 10px 15px !important;
+  margin-bottom: 8px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.submenu-item:hover {
+  background: rgba(98, 0, 234, 0.15) !important;
+  transform: translateX(3px) !important;
+}
+
+.submenu-item img {
+  width: 20px !important;
+  margin-right: 10px !important;
+}
+
+.logout-button {
+  margin-bottom: 0 !important;
+  color: #ff4444 !important;
 }

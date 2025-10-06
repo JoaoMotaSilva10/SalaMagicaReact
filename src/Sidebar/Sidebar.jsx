@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Sidebar.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,9 +14,17 @@ import homeIcon from '../assets/frame7.svg';
 
 function Sidebar() {
   const { logout, user } = useAuth();
+  const [expandedMenus, setExpandedMenus] = useState({});
 
   const handleLogout = () => {
     logout();
+  };
+
+  const toggleMenu = (menuName) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [menuName]: !prev[menuName]
+    }));
   };
 
   const isAdmin = user?.tipoUsuario === 'ADMINISTRADOR';
@@ -24,39 +32,90 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="logo">
-      <img src={Logo}/>
+        <img src={Logo}/>
         <h2>Sala Mágica</h2>
       </div>
-      <ul>
-      <Link to={'/'} className="custom-button"> <li>
-      <img src={homeIcon} /> <i className="icon-home"></i> Início 
-        </li></Link>
-        <Link to={'/Reservas'} className="custom-button"> <li>
-         <img src={roomIcon}></img> <i className="icon-reservas"></i> Análise de Reservas 
-        </li></Link>
-        <Link to={'/ReservasMarcadas'} className="custom-button">   <li>
-        <img src={equipmentIcon}></img> <i className="icon-salas"></i> Reservas Marcadas
-        </li></Link>
-        <Link to={'/ReservasRealizadas'} className="custom-button"> <li>
-        <img src={adminIcon}></img>  <i className="icon-admin"></i> Reservas Realizadas
-        </li></Link>
-        <Link to={'/Suporte'} className="custom-button"><li>
-        <img src={statusIcon}></img>  <i className="icon-suporte"></i> Suporte
-        </li></Link>
-        {isAdmin && (
-          <>
-            <Link to={'/Gerenciador'} className="custom-button"><li>
-            <img src={analysisIcon}></img>  <i className="icon-suporte"></i> Gerenciadores
-            </li></Link>
-            <Link to={'/Alunos'} className="custom-button"><li>
-            <img src={supportIcon}></img>  <i className="icon-suporte"></i> Alunos
-            </li></Link>
-          </>
-        )}
-        <li onClick={handleLogout} className="custom-button logout-button" style={{cursor: 'pointer', color: '#ff4444'}}>
-          <img src={ExternalLink} alt="Sair" /> Sair
-        </li>
-      </ul>
+      <div className="sidebar-content">
+        <ul>
+          <Link to={'/'} className="custom-button">
+            <li>
+              <img src={homeIcon} /> Início 
+            </li>
+          </Link>
+          
+          <li className="menu-item" onClick={() => toggleMenu('reservas')}>
+            <img src={roomIcon} /> Reservas 
+            <span className={`arrow ${expandedMenus.reservas ? 'expanded' : ''}`}>▼</span>
+          </li>
+          {expandedMenus.reservas && (
+            <div className="submenu">
+              <Link to={'/Reservas'} className="custom-button">
+                <li className="submenu-item">
+                  <img src={analysisIcon} /> Análise
+                </li>
+              </Link>
+              <Link to={'/ReservasMarcadas'} className="custom-button">
+                <li className="submenu-item">
+                  <img src={equipmentIcon} /> Marcadas
+                </li>
+              </Link>
+              <Link to={'/ReservasRealizadas'} className="custom-button">
+                <li className="submenu-item">
+                  <img src={adminIcon} /> Realizadas
+                </li>
+              </Link>
+              <Link to={'/ReservasGerenciamento'} className="custom-button">
+                <li className="submenu-item">
+                  <img src={statusIcon} /> Todas
+                </li>
+              </Link>
+            </div>
+          )}
+          
+          <Link to={'/Recursos'} className="custom-button">
+            <li>
+              <img src={statusIcon} /> Recursos
+            </li>
+          </Link>
+          
+          <Link to={'/Suporte'} className="custom-button">
+            <li>
+              <img src={supportIcon} /> Suporte
+            </li>
+          </Link>
+          
+          {isAdmin && (
+            <>
+              <li className="menu-item" onClick={() => toggleMenu('admin')}>
+                <img src={adminIcon} /> Administração 
+                <span className={`arrow ${expandedMenus.admin ? 'expanded' : ''}`}>▼</span>
+              </li>
+              {expandedMenus.admin && (
+                <div className="submenu">
+                  <Link to={'/Gerenciador'} className="custom-button">
+                    <li className="submenu-item">
+                      <img src={analysisIcon} /> Gerenciadores
+                    </li>
+                  </Link>
+                  <Link to={'/Alunos'} className="custom-button">
+                    <li className="submenu-item">
+                      <img src={supportIcon} /> Alunos
+                    </li>
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
+        </ul>
+        
+        <div className="sidebar-footer">
+          <ul>
+            <li onClick={handleLogout} className="logout-button" style={{cursor: 'pointer'}}>
+              <img src={ExternalLink} alt="Sair" /> Sair
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
