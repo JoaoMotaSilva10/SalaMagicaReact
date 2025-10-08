@@ -1,217 +1,232 @@
-/* Removido - usando gradiente global */
-
-h1 {
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 0.3em;
+.alunos-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.cadfunc {
-  font-size: 4.2rem;
-  margin-top: 5%;
-  font-weight: 700;
-  background: linear-gradient(135deg, #ffffff 0%, #a97fff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 10px rgba(169, 127, 255, 0.3);
+.alunos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.cadfunc2 {
-  font-size: 4rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #ffffff 0%, #a97fff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 10px rgba(169, 127, 255, 0.3);
-}
-
-.main-content {
-  flex: 1;
-  padding: 40px;
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(10px);
-  min-height: 100vh;
-  color: white;
-  box-sizing: border-box;
-  width: 100%;
-  overflow: hidden;
-}
-
-.table-container {
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid rgba(98, 0, 234, 0.3);
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-}
-
-th, td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #333; /* linha cinza escuro */
-  vertical-align: middle;
-}
-
-th {
-  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
+.alunos-header h1 {
   color: #fff;
+  margin: 0;
+  background: transparent;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #6200ea, #7e3ff2);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.btn-add:hover {
+  opacity: 0.8;
+}
+
+.alunos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.aluno-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #333;
+  transition: transform 0.2s;
+}
+
+.aluno-card:hover {
+  transform: translateY(-4px);
+}
+
+.aluno-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.aluno-header h3 {
+  color: #fff;
+  margin: 0;
+  background: transparent;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  position: relative;
 }
 
-tr:hover {
-  background: linear-gradient(135deg, #222 0%, #333 100%);
-  transform: scale(1.01);
-  transition: all 0.3s ease;
+.status.ativo {
+  background: #4caf50;
+  color: white;
 }
 
-button {
-  background-color: transparent;
+.status.inativo {
+  background: #f44336;
+  color: white;
+}
+
+.aluno-card p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 8px 0;
+  font-size: 14px;
+  background: transparent;
+}
+
+.aluno-card p strong {
+  color: #7e3ff2;
+  background: transparent;
+}
+
+.aluno-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-edit, .btn-delete {
+  padding: 8px 16px;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  color: #fff; /* branco */
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  font-size: 12px;
 }
 
-button:hover {
-  color: #ccc; /* cinza claro no hover */
+.btn-edit {
+  background: #2196f3;
+  color: white;
 }
 
-.lapis {
-  background-color: transparent;
-  color: #fff;
-  font-size: 1.2rem;
-  border: none;
-  cursor: pointer;
+.btn-delete {
+  background: #f44336;
+  color: white;
 }
 
-.lapis:hover {
-  color: #ccc;
+.btn-edit:hover, .btn-delete:hover {
+  opacity: 0.8;
 }
 
-/* Esconder botão excluir (se quiser mesmo não mostrar) */
-button.excluir {
-  display: none;
-}
-
-.add-button {
-  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
-  color: #fff;
-  padding: 15px 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  font-weight: 600;
-  display: block;
-  margin: 20px auto;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
-}
-
-.add-button:hover {
-  background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
-}
-
-/* Modal */
-
-.modal {
+/* Modal styles */
+.modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  padding: 1rem;
-  box-sizing: border-box;
+  z-index: 1000;
 }
 
-.modal-content {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-  padding: 2rem;
+.modal {
+  background: #1a1a1a;
   border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid rgba(98, 0, 234, 0.3);
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  border: 1px solid #333;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
   color: #fff;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  background: transparent;
 }
 
-.modal-content h2 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  text-align: center;
+.btn-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
 }
 
-.modal-content label {
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
   display: block;
-  margin: 0.8rem 0 0.3rem;
-  font-weight: 600;
-}
-
-.modal-content input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(98, 0, 234, 0.3);
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   color: #fff;
-  font-size: 1rem;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
+  margin-bottom: 8px;
+  font-weight: 500;
+  background: transparent;
 }
 
-.modal-content input:focus {
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
   outline: none;
   border-color: #7e3ff2;
-  box-shadow: 0 0 10px rgba(98, 0, 234, 0.3);
 }
 
-.modal-content button {
-  background: linear-gradient(135deg, #6200ea 0%, #7e3ff2 100%);
-  color: #fff;
-  padding: 12px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
   font-weight: 600;
-  margin-right: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
 }
 
-.modal-content button:hover {
-  background: linear-gradient(135deg, #7e3ff2 0%, #9c5aff 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
+.form-actions button[type="button"] {
+  background: #666;
+  color: white;
 }
 
-/* Botão cancelar */
-.modal-content button:last-child {
-  background: linear-gradient(135deg, #333 0%, #444 100%);
-  border-color: rgba(255, 255, 255, 0.2);
+.form-actions button[type="submit"] {
+  background: linear-gradient(135deg, #6200ea, #7e3ff2);
+  color: white;
 }
 
-.modal-content button:last-child:hover {
-  background: linear-gradient(135deg, #444 0%, #555 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.loading {
+  text-align: center;
+  color: #fff;
+  padding: 50px;
+  font-size: 18px;
+  background: transparent;
 }

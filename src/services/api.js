@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://unarrested-unreverentially-valeria.ngrok-free.dev',
+  baseURL: 'http://localhost:8080',
   headers: {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
+    'Content-Type': 'application/json'
   },
   timeout: 10000
 });
@@ -16,7 +15,15 @@ export const login = async (email, senha) => {
 };
 
 export const validateToken = async () => {
-  const response = await api.get('/auth/validate');
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Token não encontrado');
+  }
+  const response = await api.get('/auth/validate', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
   return response.data;
 };
 
@@ -77,23 +84,42 @@ export const confirmarRealizacao = async (reservaId) => {
 // Função legada para compatibilidade
 export const ConfirmarRealizacao = confirmarRealizacao;
 
-// Estatísticas de Reservas
+// Estatísticas Unificadas (NOVO)
+export const getEstatisticasCompletas = async () => {
+  const response = await api.get('/estatisticas');
+  return response.data;
+};
+
+// Estatísticas de Reservas (Mantido para compatibilidade)
 export const getEstatisticasReservas = async () => {
-  const [total, hoje, pendentes, marcadas, realizadas] = await Promise.all([
-    api.get('/reservas/count'),
-    api.get('/reservas/count/today'),
-    api.get('/reservas/count/pendentes'),
-    api.get('/reservas/count/marcadas'),
-    api.get('/reservas/count/realizadas')
-  ]);
-  
-  return {
-    total: total.data,
-    hoje: hoje.data,
-    pendentes: pendentes.data,
-    marcadas: marcadas.data,
-    realizadas: realizadas.data
-  };
+  try {
+    // Tenta usar o novo endpoint primeiro
+    const stats = await getEstatisticasCompletas();
+    return {
+      total: stats.totalReservas,
+      hoje: stats.reservasHoje,
+      pendentes: stats.reservasPendentes,
+      marcadas: stats.reservasMarcadas,
+      realizadas: stats.reservasRealizadas
+    };
+  } catch (error) {
+    // Fallback para endpoints individuais
+    const [total, hoje, pendentes, marcadas, realizadas] = await Promise.all([
+      api.get('/reservas/count'),
+      api.get('/reservas/count/today'),
+      api.get('/reservas/count/pendentes'),
+      api.get('/reservas/count/marcadas'),
+      api.get('/reservas/count/realizadas')
+    ]);
+    
+    return {
+      total: total.data,
+      hoje: hoje.data,
+      pendentes: pendentes.data,
+      marcadas: marcadas.data,
+      realizadas: realizadas.data
+    };
+  }
 };
 
 // Recursos API
@@ -147,20 +173,25 @@ export const deletarAluno = async (id) => {
 };
 
 // Recuperação de senha - Alunos
-export const esqueciSenha = async (email) => {
+export const esqueciSenhaAluno = async (email) => {
   const response = await api.post('/alunos/esqueci-senha', { email });
   return response.data;
 };
 
-export const verificarCodigo = async (email, codigo) => {
+export const verificarCodigoAluno = async (email, codigo) => {
   const response = await api.post('/alunos/verificar-codigo', { email, codigo });
   return response.data;
 };
 
-export const redefinirSenha = async (email, codigo, novaSenha) => {
+export const redefinirSenhaAluno = async (email, codigo, novaSenha) => {
   const response = await api.post('/alunos/redefinir-senha', { email, codigo, novaSenha });
   return response.data;
 };
+
+// Funções legadas para compatibilidade
+export const esqueciSenha = esqueciSenhaAluno;
+export const verificarCodigo = verificarCodigoAluno;
+export const redefinirSenha = redefinirSenhaAluno;
 
 // Gerenciadores API
 export const getGerenciadores = async () => {
@@ -178,18 +209,49 @@ export const atualizarGerenciador = async (id, gerenciador) => {
   return response.data;
 };
 
+export const getGerenciadorPorId = async (id) => {
+  const response = await api.get(`/gerenciadores/${id}`);
+  return response.data;
+};
+
 export const deletarGerenciador = async (id) => {
   await api.delete(`/gerenciadores/${id}`);
 };
 
-// Administradores API
+// Recuperação de senha - Gerenciadores
+export const esqueciSenhaGerenciador = async (email) => {
+  const response = await api.post('/gerenciadores/esqueci-senha', { email });
+  return response.data;
+};
+
+// Administradores API (ATUALIZADO)
 export const getAdministradores = async () => {
   const response = await api.get('/administradores');
   return response.data;
 };
 
+export const getAdministradorPorId = async (id) => {
+  const response = await api.get(`/administradores/${id}`);
+  return response.data;
+};
+
 export const criarAdministrador = async (administrador) => {
   const response = await api.post('/administradores', administrador);
+  return response.data;
+};
+
+export const atualizarAdministrador = async (id, administrador) => {
+  const response = await api.put(`/administradores/${id}`, administrador);
+  return response.data;
+};
+
+export const deletarAdministrador = async (id) => {
+  await api.delete(`/administradores/${id}`);
+};
+
+// Recuperação de senha - Administradores
+export const esqueciSenhaAdministrador = async (email) => {
+  const response = await api.post('/administradores/esqueci-senha', { email });
   return response.data;
 };
 
@@ -239,6 +301,70 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Health Check
+export const healthCheck = async () => {
+  const response = await api.get('/health');
+  return response.data;
+};
+
+// Utilitários de Data
+export const formatarData = (data) => {
+  if (!data) return '';
+  
+  try {
+    let date;
+    
+    // Se for array de números [ano, mês, dia, hora, minuto, segundo, nano]
+    if (Array.isArray(data)) {
+      const [year, month, day, hour = 0, minute = 0, second = 0] = data;
+      date = new Date(year, month - 1, day, hour, minute, second);
+    } else {
+      date = new Date(data);
+    }
+    
+    if (isNaN(date.getTime())) return '';
+    
+    // Ajustar para timezone local antes de formatar
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+    
+    // Formato para input datetime-local: YYYY-MM-DDTHH:MM
+    return localDate.toISOString().substring(0, 16);
+  } catch (error) {
+    console.warn('Erro ao formatar data:', data, error);
+    return '';
+  }
+};
+
+export const formatarDataExibicao = (data) => {
+  if (!data) return 'N/A';
+  
+  try {
+    let date;
+    
+    // Se for array de números [ano, mês, dia, hora, minuto, segundo, nano]
+    if (Array.isArray(data)) {
+      const [year, month, day, hour = 0, minute = 0, second = 0] = data;
+      date = new Date(year, month - 1, day, hour, minute, second);
+    } else {
+      date = new Date(data);
+    }
+    
+    if (isNaN(date.getTime())) return 'Data inválida';
+    
+    return date.toLocaleString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (error) {
+    console.warn('Erro ao formatar data para exibição:', data, error);
+    return 'Data inválida';
+  }
+};
 
 export default api;
 

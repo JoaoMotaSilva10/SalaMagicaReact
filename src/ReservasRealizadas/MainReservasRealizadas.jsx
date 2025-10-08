@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { getTodasReservas, atualizarReserva, getTodosRecursos } from '../services/api';
+import { getTodasReservas, atualizarReserva, getTodosRecursos, formatarData, formatarDataExibicao } from '../services/api';
 import '../AnaliseReservas/ReservasCards.css';
 
 export function MainReservasRealizadas() {
   const [reservas, setReservas] = useState([]);
+  const [filteredReservas, setFilteredReservas] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [recursos, setRecursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -27,11 +29,26 @@ export function MainReservasRealizadas() {
       ]);
       const realizadas = reservasData.filter(r => r.statusReserva === 'REALIZADA');
       setReservas(realizadas);
+      setFilteredReservas(realizadas);
       setRecursos(recursosData);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    if (!term) {
+      setFilteredReservas(reservas);
+    } else {
+      const filtered = reservas.filter(reserva => 
+        reserva.pessoaNome?.toLowerCase().includes(term.toLowerCase()) ||
+        reserva.recurso?.nome?.toLowerCase().includes(term.toLowerCase()) ||
+        reserva.informacao?.toLowerCase().includes(term.toLowerCase())
+      );
+      setFilteredReservas(filtered);
     }
   };
 
@@ -42,7 +59,7 @@ export function MainReservasRealizadas() {
         informacao: formData.informacao,
         dataReservada: formData.dataReservada,
         statusReserva: formData.statusReserva,
-        pessoaId: editingReserva.pessoa?.id,
+        pessoaId: editingReserva.pessoaId || editingReserva.pessoa?.id,
         recurso: { id: parseInt(formData.recurso.id) }
       };
       
@@ -57,21 +74,9 @@ export function MainReservasRealizadas() {
   const handleEdit = (reserva) => {
     setEditingReserva(reserva);
     
-    let dataFormatada = '';
-    if (reserva.dataReservada) {
-      try {
-        const date = new Date(reserva.dataReservada);
-        if (!isNaN(date.getTime())) {
-          dataFormatada = date.toISOString().substring(0, 16);
-        }
-      } catch (error) {
-        console.error('Erro ao formatar data:', error);
-      }
-    }
-    
     setFormData({
       informacao: reserva.informacao || '',
-      dataReservada: dataFormatada,
+      dataReservada: formatarData(reserva.dataReservada),
       statusReserva: reserva.statusReserva,
       recurso: { id: reserva.recurso?.id || '' }
     });
@@ -95,21 +100,35 @@ export function MainReservasRealizadas() {
     <div className="reservas-container">
       <div className="reservas-header">
         <h1>Reservas Realizadas</h1>
+        <input
+          type="text"
+          placeholder="Pesquisar por usuário, recurso ou informação..."
+          value={searchTerm}
+          onChange={(e) => handleSearch(e.target.value)}
+          style={{
+            padding: '10px',
+            borderRadius: '6px',
+            border: '1px solid #333',
+            background: '#0a0a0a',
+            color: '#fff',
+            minWidth: '300px'
+          }}
+        />
       </div>
 
-      {reservas.length === 0 ? (
-        <p className="sem-reservas">Nenhuma reserva realizada.</p>
+      {filteredReservas.length === 0 ? (
+        <p className="sem-reservas">{searchTerm ? 'Nenhuma reserva encontrada.' : 'Nenhuma reserva realizada.'}</p>
       ) : (
         <div className="reservas-grid">
-          {reservas.map(reserva => (
+          {filteredReservas.map(reserva => (
             <div key={reserva.id} className="reserva-card">
               <div className="reserva-header">
                 <h3>#{reserva.id}</h3>
                 <span className="status realizada">REALIZADA</span>
               </div>
-              <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoa?.nome}</p>
+              <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoaNome || reserva.pessoa?.nome || 'N/A'}</p>
               <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
-              <p className="reserva-descricao"><strong>Data:</strong> {new Date(reserva.dataReservada).toLocaleString()}</p>
+              <p className="reserva-descricao"><strong>Data:</strong> {formatarDataExibicao(reserva.dataReservada)}</p>
               <p className="reserva-descricao">{reserva.informacao}</p>
               <div className="reserva-actions">
                 <button className="btn-edit" onClick={() => handleEdit(reserva)}>Editar</button>

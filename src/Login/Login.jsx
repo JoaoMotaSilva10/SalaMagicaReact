@@ -9,8 +9,9 @@ import { useAuth } from '../contexts/AuthContext';
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem('rememberedEmail') || '');
   const [senha, setSenha] = useState('');
+  const [rememberLogin, setRememberLogin] = useState(!!localStorage.getItem('rememberedEmail'));
   const [erro, setErro] = useState('');
 
   const handleLogin = async (e) => {
@@ -24,6 +25,13 @@ const Login = () => {
       if (usuario.tipoUsuario === 'ALUNO') {
         setErro('Acesso negado. Apenas gerenciadores e administradores podem acessar o sistema.');
         return;
+      }
+
+      // Salva ou remove email baseado na opção "lembrar login"
+      if (rememberLogin) {
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
       }
 
       login(usuario, token);
@@ -74,7 +82,12 @@ const Login = () => {
             <a href="/esqueci-senha" className="forgot-password">Esqueceu a senha?</a>
             <div className="remember">
               <label className="switch">
-                <input type="checkbox" id="remember" />
+                <input 
+                  type="checkbox" 
+                  id="remember" 
+                  checked={rememberLogin}
+                  onChange={(e) => setRememberLogin(e.target.checked)}
+                />
                 <span className="slider"></span>
               </label>
               <label htmlFor="remember" className="lembrlog">Lembrar login</label>

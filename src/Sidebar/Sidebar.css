@@ -4,7 +4,7 @@
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
-  background: transparent !important;
+  background: transparent;
   border-right: 2px solid rgba(98, 0, 234, 0.3);
   position: fixed;
   top: 0;
@@ -33,13 +33,7 @@
   font-size: 24px;
   font-weight: 600;
   margin: 0;
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  flex: 1;
+  background: transparent;
 }
 
 .sidebar ul {
@@ -47,21 +41,7 @@
   padding: 0;
   margin: 0;
   width: 100%;
-  background: transparent !important;
   flex: 1;
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 20px;
-}
-
-.sidebar-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  background: transparent !important;
 }
 
 .sidebar ul li {
@@ -70,60 +50,39 @@
   font-size: 18px;
   padding: 15px 18px;
   margin-bottom: 15px;
-  border-radius: 0;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   color: white;
-  border: none;
   border-left: 3px solid transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.sidebar ul li::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(98, 0, 234, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.sidebar ul li img {
-  width: 28px;
-  margin-right: 12px;
-  background: transparent !important;
-  border-radius: 0;
-  filter: brightness(1.2);
+  cursor: pointer;
 }
 
 .sidebar ul li:hover {
   transform: translateY(-2px) translateX(5px);
   background: rgba(98, 0, 234, 0.2);
   backdrop-filter: blur(15px);
-  cursor: pointer;
   box-shadow: 0 8px 25px rgba(98, 0, 234, 0.3);
   border-left-color: rgba(98, 0, 234, 0.8);
 }
 
-.sidebar ul li:hover::before {
-  left: 100%;
+.sidebar ul li img {
+  width: 28px;
+  margin-right: 12px;
+  filter: brightness(1.2);
 }
 
-a {
+.custom-button {
   text-decoration: none;
   color: white;
   width: 100%;
   display: block;
 }
 
-.custom-button {
-  text-decoration: none;
-  color: white;
-  font-weight: 500;
+.logout-button {
+  color: #ff4444 !important;
+  margin-top: auto;
 }
 
 .menu-item {
@@ -137,6 +96,7 @@ a {
   font-size: 12px;
   transition: transform 0.3s ease;
   color: rgba(255, 255, 255, 0.7);
+  margin-left: auto;
 }
 
 .arrow.expanded {
@@ -165,9 +125,4 @@ a {
 .submenu-item img {
   width: 20px !important;
   margin-right: 10px !important;
-}
-
-.logout-button {
-  margin-bottom: 0 !important;
-  color: #ff4444 !important;
 }

@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-/* Remove fundos cinzas indesejados */
+/* Remove fundos indesejados apenas onde necessário */
 p, span, strong, em {
   background: transparent !important;
 }
