@@ -126,12 +126,12 @@ const MainContentGerenciador = () => {
         {filteredEmployees.map((employee) => (
           <div key={employee.id} className="gerenciador-card">
             <div className="gerenciador-header">
-              <h3>#{employee.id}</h3>
+              <h3>{employee.nome || 'Nome N/A'}</h3>
               <span className={`status ${employee.statusUsuario?.toLowerCase()}`}>
                 {employee.statusUsuario}
               </span>
             </div>
-            <p><strong>Nome:</strong> {employee.nome}</p>
+            <p><strong>ID:</strong> #{employee.id}</p>
             <p><strong>Email:</strong> {employee.email}</p>
             <p><strong>Unidade:</strong> {employee.unidade || '-'}</p>
             <p><strong>Departamento:</strong> {employee.departamento || '-'}</p>

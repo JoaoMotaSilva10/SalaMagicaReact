@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTodasReservas, atualizarReserva, getTodosRecursos, formatarData, formatarDataExibicao } from '../services/api';
+import { getTodasReservas, atualizarReserva, getTodosRecursos, deletarReserva, formatarData, formatarDataExibicao } from '../services/api';
 import '../AnaliseReservas/ReservasCards.css';
 
 export function MainReservasRealizadas() {
@@ -83,6 +83,18 @@ export function MainReservasRealizadas() {
     setShowModal(true);
   };
 
+  const handleExcluir = async (reserva) => {
+    if (window.confirm(`Tem certeza que deseja excluir a reserva #${reserva.id}?`)) {
+      try {
+        await deletarReserva(reserva.id);
+        await carregarDados();
+      } catch (error) {
+        console.error('Erro ao excluir reserva:', error);
+        alert('Erro ao excluir reserva. Tente novamente.');
+      }
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       informacao: '',
@@ -123,15 +135,16 @@ export function MainReservasRealizadas() {
           {filteredReservas.map(reserva => (
             <div key={reserva.id} className="reserva-card">
               <div className="reserva-header">
-                <h3>#{reserva.id}</h3>
+                <h3>{reserva.pessoaNome || reserva.pessoa?.nome || 'Usuário N/A'}</h3>
                 <span className="status realizada">REALIZADA</span>
               </div>
-              <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoaNome || reserva.pessoa?.nome || 'N/A'}</p>
+              <p className="reserva-tipo"><strong>ID:</strong> #{reserva.id}</p>
               <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
               <p className="reserva-descricao"><strong>Data:</strong> {formatarDataExibicao(reserva.dataReservada)}</p>
               <p className="reserva-descricao">{reserva.informacao}</p>
               <div className="reserva-actions">
                 <button className="btn-edit" onClick={() => handleEdit(reserva)}>Editar</button>
+                <button className="btn-recusar" onClick={() => handleExcluir(reserva)}>Excluir</button>
               </div>
             </div>
           ))}

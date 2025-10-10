@@ -129,12 +129,12 @@ const MainContentAlunos = () => {
         {filteredStudents.map((student) => (
           <div key={student.id} className="aluno-card">
             <div className="aluno-header">
-              <h3>#{student.id}</h3>
+              <h3>{student.nome || 'Nome N/A'}</h3>
               <span className={`status ${student.statusUsuario?.toLowerCase()}`}>
                 {student.statusUsuario}
               </span>
             </div>
-            <p><strong>Nome:</strong> {student.nome}</p>
+            <p><strong>ID:</strong> #{student.id}</p>
             <p><strong>Email:</strong> {student.email}</p>
             <p><strong>RM:</strong> {student.rm || '-'}</p>
             <p><strong>Turma:</strong> {student.turma || '-'}</p>

@@ -121,12 +121,12 @@ const ReservasGerenciamento = () => {
         {reservas.map(reserva => (
           <div key={reserva.id} className="reserva-card">
             <div className="reserva-header">
-              <h3>#{reserva.id}</h3>
+              <h3>{reserva.pessoa?.nome || 'Usuário N/A'}</h3>
               <span className={`status ${getStatusColor(reserva.statusReserva)}`}>
                 {reserva.statusReserva}
               </span>
             </div>
-            <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoa?.nome}</p>
+            <p className="reserva-tipo"><strong>ID:</strong> #{reserva.id}</p>
             <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
             <p className="reserva-descricao"><strong>Data:</strong> {new Date(reserva.dataReservada).toLocaleString()}</p>
             <p className="reserva-descricao">{reserva.informacao}</p>

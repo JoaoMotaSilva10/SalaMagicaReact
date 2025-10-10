@@ -133,10 +133,10 @@ const Reservas = () => {
           {filteredReservas.map(reserva => (
             <div key={reserva.id} className="reserva-card">
               <div className="reserva-header">
-                <h3>#{reserva.id}</h3>
+                <h3>{reserva.pessoaNome || 'Usuário N/A'}</h3>
                 <span className="status pendente">EM ANÁLISE</span>
               </div>
-              <p className="reserva-tipo"><strong>Usuário:</strong> {reserva.pessoaNome || 'N/A'}</p>
+              <p className="reserva-tipo"><strong>ID:</strong> #{reserva.id}</p>
               <p><strong>Recurso:</strong> {reserva.recurso?.nome}</p>
               <p className="reserva-descricao"><strong>Data:</strong> {formatarDataExibicao(reserva.dataReservada)}</p>
               <p className="reserva-descricao">{reserva.informacao}</p>
