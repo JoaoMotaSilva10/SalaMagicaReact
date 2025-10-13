@@ -16,6 +16,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErro(''); // Limpa erro anterior
 
     try {
       const response = await loginAPI(email, senha);
